@@ -3,7 +3,7 @@ const NodeCache = require('node-cache');
 const ZKTCache = require('./cache');
 const ZKTLock = require('./lock');
 const debug = require('debug');
-const fmhash = require('fmhash');
+const md5 = require('./md5');
 
 let redisInstances = {};
 
@@ -79,7 +79,7 @@ class ZKTLoader {
 	 */
 	getKey(key) {
 		if (typeof key !== 'string' && typeof key !== 'number') {
-			key = fmhash(JSON.stringify(key));
+			key = md5(JSON.stringify(key));
 		}
 		return `${this.options.keyPrefix}:${this.name}:${key}`;
 	}

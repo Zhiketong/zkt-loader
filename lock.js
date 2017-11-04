@@ -1,5 +1,5 @@
 const debug = require('debug')('zktLock');
-const fmhash = require('fmhash');
+const md5 = require('./md5');
 const pwait = require('pwait');
 const ZKTCache = require('./cache');
 
@@ -26,7 +26,7 @@ class ZKTLock {
 
 	getKey(key) {
 		if (typeof key !== 'string' && typeof key !== 'number') {
-			key = fmhash(JSON.stringify(key));
+			key = md5(JSON.stringify(key));
 		}
 		return `${this.options.keyPrefix}:${key}`;
 	}
