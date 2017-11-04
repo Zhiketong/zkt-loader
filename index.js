@@ -11,7 +11,7 @@ class ZKTLoader {
 
 	constructor(name, loader, options) {
 
-		if (!name || !name.match(/^[a-z0-9\:\_\-\.]+$/)) {
+		if (!name || !name.match(/^[a-z0-9\:\_\-\.]+$/i)) {
 			throw new Error('ZKTLoader need first argument to be a valid string');
 		}
 
@@ -87,7 +87,7 @@ class ZKTLoader {
 	/**
 	 * load data from cache or loader
 	 */
-	async load(origKey) {
+	async load(origKey, ...args) {
 		let key = this.getKey(origKey);
 
 		return new Promise(async (done, reject) => {
@@ -109,7 +109,7 @@ class ZKTLoader {
 					let { executed } = await this.lock.race(origKey, async () => {
 						this.debug(`loading ${key} from loader`);
 						try {
-							let newData = await this.loader(origKey);
+							let newData = await this.loader(origKey, ...args);
 							this.debug(`set ${key} to cache`);
 							await this.prime(origKey, newData);
 							if (!did) {
