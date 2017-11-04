@@ -141,7 +141,7 @@ class ZKTLoader {
 
 	//清除缓存
 	clear(key) {
-		return this.cache.del(this.getKey(key)) * 1;
+		return this.cache.del(this.getKey(key)).then(r => r * 1);
 	}
 
 	//设置缓存
