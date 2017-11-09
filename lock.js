@@ -127,7 +127,7 @@ class ZKTLock {
 		try {
 			result = await task(delayed);
 		} catch (_err) {
-			console.error(`ZKTLock: task throws error for ${lockName}: `, _err);
+			if (!_err || !_err.zkt_loader) console.error(`ZKTLock: task throws error for ${lockName}: `, _err);
 			err = _err;
 		}
 		debug(`task executed for ${lockName}`);

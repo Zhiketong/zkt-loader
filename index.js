@@ -117,6 +117,8 @@ class ZKTLoader {
 								did = true;
 							}
 						} catch (err) {
+							if (typeof err === 'object') err.zkt_loader = 1;
+							if (err && err.code) throw err;
 							if (typeof err !== 'object') err = new Error(err);
 							err.message = `ZKT-Loader ${this.name}:${key} Error: ${err.message}`;
 							throw err;
