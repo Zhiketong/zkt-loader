@@ -31,14 +31,13 @@ class ZKTLoader {
 			//default expiration seconds
 			ttl: 30,
 
-			//expiration seconds of loader call
+			//expiration seconds of loader call. deprecated
 			loaderTimeout: 3,
 
 			//prefix for every key
 			keyPrefix: 'zktLoader'
 
 		}, options);
-
 
 		//create cache instance
 		if (this.options.useRedis) {
@@ -158,3 +157,12 @@ class ZKTLoader {
 
 
 module.exports = ZKTLoader;
+
+module.exports.cacheable = function(name, options) {
+	return function(origFunc) {
+		let loader = new ZKTLoader(name, origFunc, options);
+		return function(...args) {
+			return loader.load(...args);
+		};
+	};
+};
